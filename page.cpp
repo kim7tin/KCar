@@ -1,0 +1,183 @@
+#include "page.h"
+
+page::page() {
+
+}
+
+String page::index() {
+  String page = "";
+  page += "<html>";
+  page += "<head>";
+  page += "<meta name=\"viewport\"";
+  page += "  content=\"width=device-width, initial-scale=1.0, user-scalable=no\">";
+  page += "<link href=\"index.css\" rel=\"stylesheet\" />";
+  page += "</head>";
+  page += "<body>";
+  page += " <table>";
+  page += "   <tr>";
+  page += "     <td colspan=\"3\">";
+  page += "       <button id=\"UpStart\">&uarr;</button>";
+  page += "     </td>";
+  page += "   </tr>";
+  page += "   <tr>";
+  page += "     <td>";
+  page += "       <button id=\"LeftStart\">&larr;</button>";
+  page += "     </td>";
+  page += "     <td></td>";
+  page += "     <td>";
+  page += "       <button id=\"RightStart\">&rarr;</button>";
+  page += "     </td>";
+  page += "   </tr>";
+  page += "   <tr>";
+  page += "     <td colspan=\"3\">";
+  page += "       <button id=\"DownStart\">&darr;</button>";
+  page += "     </td>";
+  page += "   </tr>";
+  page += " </table>";
+  page += " <table>";
+  page += " <tr>";
+  page += " <td><button id=\"LightStart\">&#9728;</button></td>";
+  page += " <td>&#9760</td>";
+  page += " <td><button id=\"TransformStart\">&#9763;</button></td>";
+  page += " </tr>";
+  page += " </table>";
+  page += " <script type=\"text/javascript\" src=\"index.js\"></script>";
+  page += "</body>";
+  page += "</html>";
+
+
+  return page;
+}
+
+String page::js() {String page="";
+page+="var ws, connected = false, roboState = false, light = false;";
+page+="function start(websocketServerLocation) {";
+page+=" ws = new WebSocket(websocketServerLocation);";
+page+=" ws.onopen = function() {";
+page+="   connected = true;";
+page+="   console.log(\"Connected\");";
+page+=" };";
+page+=" ws.onmessage = function(evt) {";
+page+=" };";
+page+=" ws.onclose = function() {";
+page+="   connected = false;";
+page+="   console.log(\"Connection is closed\");";
+page+="   setTimeout(function() {";
+page+="     start(websocketServerLocation);";
+page+="   }, 10);";
+page+=" };";
+page+="}";
+page+="start('ws://' + location.hostname + ':81/', [ 'arduino' ]);";
+page+="";
+page+="window.oncontextmenu = function(event) {";
+page+=" event.preventDefault();";
+page+=" event.stopPropagation();";
+page+=" return false;";
+page+="};";
+page+="";
+page+="document.body.addEventListener('touchmove', function(event) {";
+page+=" event.preventDefault();";
+page+="}, false);";
+page+="";
+page+="document.getElementById(\"UpStart\").addEventListener(\"touchstart\",";
+page+="   function(evt) {";
+page+="     UpStart(1);";
+page+="   }, false);";
+page+="document.getElementById(\"UpStart\").addEventListener(\"touchend\", function(evt) {";
+page+=" UpStart(0);";
+page+="}, false);";
+page+="document.getElementById(\"DownStart\").addEventListener(\"touchstart\",";
+page+="   function(evt) {";
+page+="     DownStart(1);";
+page+="   }, false);";
+page+="document.getElementById(\"DownStart\").addEventListener(\"touchend\",";
+page+="   function(evt) {";
+page+="     DownStart(0);";
+page+="   }, false);";
+page+="document.getElementById(\"LeftStart\").addEventListener(\"touchstart\",";
+page+="   function(evt) {";
+page+="     LeftStart(1);";
+page+="   }, false);";
+page+="document.getElementById(\"LeftStart\").addEventListener(\"touchend\",";
+page+="   function(evt) {";
+page+="     LeftStart(0);";
+page+="   }, false);";
+page+="document.getElementById(\"RightStart\").addEventListener(\"touchstart\",";
+page+="   function(evt) {";
+page+="     RightStart(1);";
+page+="   }, false);";
+page+="document.getElementById(\"RightStart\").addEventListener(\"touchend\",";
+page+="   function(evt) {";
+page+="     RightStart(0);";
+page+="   }, false);";
+page+="";
+page+="document.getElementById(\"TransformStart\").addEventListener(\"click\",";
+page+="   function(evt) {";
+page+="     if (connected) {";
+page+="       var state = roboState ? \"D\" : \"U\";";
+page+="       ws.send(\"ROBUP\" + state);";
+page+="       roboState = ~roboState;";
+page+="     }";
+page+="   }, false);";
+page+="";
+page+="document.getElementById(\"LightStart\").addEventListener(\"click\",";
+page+="   function(evt) {";
+page+="     if (connected) {";
+page+="       var state = light ? \"0\" : \"1\";";
+page+="       ws.send(\"LIGHT\" + state);";
+page+="       light = ~light;";
+page+="     }";
+page+="   }, false);";
+page+="";
+page+="function UpStart(state) {";
+page+=" if (connected) {";
+page+="   ws.send(\"UPSTA\" + state);";
+page+=" }";
+page+="}";
+page+="";
+page+="function DownStart(state) {";
+page+=" if (connected) {";
+page+="   ws.send(\"DOSTA\" + state);";
+page+=" }";
+page+="}";
+page+="";
+page+="function LeftStart(state) {";
+page+=" if (connected) {";
+page+="   ws.send(\"LESTA\" + state);";
+page+=" }";
+page+="}";
+page+="";
+page+="function RightStart(state) {";
+page+=" if (connected) {";
+page+="   ws.send(\"RISTA\" + state);";
+page+=" }";
+page+="}";
+  return page;
+}
+
+String page::css() {
+  String page = "";
+  page += "button {";
+  page += "  width: 100px;";
+  page += " height: 100px;";
+  page += " background-size: 100% 100%;";
+  page += " background: transparent;";
+  page += " font-size: 80px;";
+  page += " border: 1px solid;";
+  page += " font-weight: bolder;";
+  page += " border-radius: 50px;";
+  page += "}";
+  page += "";
+  page += "table{";
+  page += " float:left;";
+  page += "}";
+  page += "";
+  page += "td {";
+  page += " min-width: 100px;";
+  page += " height: 100px;";
+  page += " text-align: center;";
+  page += "}";
+
+  return page;
+}
+

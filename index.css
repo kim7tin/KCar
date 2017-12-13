@@ -1,0 +1,20 @@
+button {
+	width: 100px;
+	height: 100px;
+	background-size: 100% 100%;
+	background: transparent;
+	font-size: 80px;
+	border: 1px solid;
+	font-weight: bolder;
+	border-radius: 50px;
+}
+
+table{
+	float:left;
+}
+
+td {
+	min-width: 100px;
+	height: 100px;
+	text-align: center;
+}
